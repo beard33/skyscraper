@@ -32,15 +32,19 @@ checkMatrix ((x : xs) : xss) = isListValid (init xs)
 -- Parse line into a list of Int
 parseLine :: String -> [Int]
 parseLine line = map read $ words line :: [Int]
-
 main :: IO ()
 main = do
-    handle <- openFile "skyscrapers-6x6.txt" ReadMode
+    handle <- openFile "skyscrapers-3x3.txt" ReadMode
     contents <- hGetContents handle
     let allLines = lines contents
     let matrix = map parseLine allLines
+    let inverseMatrix = map reverse matrix
     let matrix' = transpose matrix
+    let inverseTMatrix = map reverse matrix
     let res = checkMatrix(tail (init matrix)) 
             && checkMatrix(tail (init matrix'))
+            && checkMatrix(tail (init inverseMatrix))
+            && checkMatrix(tail (init inverseTMatrix))
     if res then print "Solution is correct" else print "Solution is wrong"
     hClose handle
+
